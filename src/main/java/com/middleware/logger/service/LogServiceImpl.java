@@ -46,8 +46,6 @@ public class LogServiceImpl implements LogService {
 
 
 
-
-
     @Override
     public ResponseEntity<List<LogEntryEntity>> searchLogs(long start, long end, String text) {
         try {
