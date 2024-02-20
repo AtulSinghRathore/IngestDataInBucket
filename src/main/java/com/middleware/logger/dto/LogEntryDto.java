@@ -1,28 +1,34 @@
 package com.middleware.logger.dto;
 
-import lombok.Builder;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+
 
 @Data
-@Builder
-
+@NoArgsConstructor
+@AllArgsConstructor
 public class LogEntryDto {
-    private long time;
+
+    @JsonProperty("timestamp")
+    private Long timeStamp;
+    @JsonProperty("log")
     private String log;
 
-    public void setTime(long time) {
-        this.time = time;
+    public Long getTimeStamp() {
+        return timeStamp;
     }
 
-    public void setLog(String log) {
-        this.log = log;
-    }
-
-    public long getTime() {
-        return time;
+    public void setTimeStamp(Long timeStamp) {
+        this.timeStamp = timeStamp;
     }
 
     public String getLog() {
         return log;
+    }
+
+    public void setLog(String log) {
+        this.log = log;
     }
 }

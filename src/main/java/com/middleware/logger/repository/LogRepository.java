@@ -15,6 +15,7 @@ import org.springframework.stereotype.Repository;
 import com.middleware.logger.entity.LogEntryEntity;
 
 import java.io.ByteArrayInputStream;
+import java.time.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,12 +24,14 @@ public class LogRepository{
 
     @Value("${aws.s3.bucketName}")
     private String bucketName;
-
+    @Value("${aws.region}")
+    private String region;
     @Value("${aws.accessKey}")
     private String accessKey;
 
     @Value("${aws.secretKey}")
     private String secretKey;
+
 
 
     public ResponseEntity<String> saveLogsToS3(List<LogEntryEntity> logs) {
@@ -37,10 +40,10 @@ public class LogRepository{
 
             for (LogEntryEntity log : logs) {
                 // Convert log to JSON or text format as per requirement
-                String logData = "{\"time\":" + log.getTime() + ",\"log\":\"" + log.getLog() + "\"}";
+                String logData = "{\"time\":" + log.getTimeStamp() + ",\"log\":\"" + log.getLog() + "\"}";
 
                 // Upload log data to S3
-                s3Client.putObject(bucketName, "logs/" + log.getTime() + ".json", new ByteArrayInputStream(logData.getBytes()), null);
+                s3Client.putObject(bucketName, "atul/" + log.getTimeStamp() + ".json", new ByteArrayInputStream(logData.getBytes()), null);
             }
 
             return ResponseEntity.ok("Logs ingested and saved to S3 successfully.");
@@ -70,7 +73,10 @@ public class LogRepository{
 
                 // Parse log data and check if it matches the search criteria
                 LogEntryEntity LogEntryEntity = parseLogEntryEntity(logData);
-                if (LogEntryEntity != null && LogEntryEntity.getTime() >= start && LogEntryEntity.getTime() <= end && LogEntryEntity.getLog().contains(text)) {
+                if (LogEntryEntity != null ) {
+
+                    Instant instant = Instant.ofEpochMilli(LogEntryEntity.getTimeStamp());
+                    LocalDateTime localDateTime = LocalDateTime.ofInstant(instant, ZoneId.systemDefault());
                     searchResults.add(LogEntryEntity);
                 }
             }
@@ -87,7 +93,7 @@ public class LogRepository{
         BasicAWSCredentials credentials = new BasicAWSCredentials(accessKey, secretKey);
         return AmazonS3ClientBuilder.standard()
                 .withCredentials(new AWSStaticCredentialsProvider(credentials))
-                .withEndpointConfiguration(new AwsClientBuilder.EndpointConfiguration("s3.amazonaws.com", "us-east-1"))
+                .withEndpointConfiguration(new AwsClientBuilder.EndpointConfiguration("s3.amazonaws.com", region))
                 .build();
     }
 

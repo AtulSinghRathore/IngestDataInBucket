@@ -1,5 +1,6 @@
 package com.middleware.logger.controller;
 
+import com.middleware.logger.dto.Dto;
 import com.middleware.logger.entity.LogEntryEntity;
 import com.middleware.logger.service.LogService;
 import lombok.extern.slf4j.Slf4j;
@@ -19,7 +20,7 @@ public class LogController {
     private LogService logService;
 
     @PostMapping("/ingest")
-    public ResponseEntity<String> ingestLogs(@RequestBody List<LogEntryEntity> logs) {
+    public ResponseEntity<String> ingestLogs(@RequestBody Dto logs) {
         try {
             return logService.ingestLogs(logs);
         } catch (Exception e) {

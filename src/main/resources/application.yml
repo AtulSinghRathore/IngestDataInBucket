@@ -1,0 +1,35 @@
+# Disable batch job's auto start
+spring:
+  application:
+    name: logger-application
+  batch:
+    job:
+      enabled: false
+server:
+  port: ${PORT:8181 }
+  shutdown: graceful
+  servlet:
+    context-path: /logger-application
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "health,info,loggers" #,metrics"
+  endpoint:
+    restart:
+      enabled: true
+    health:
+      show-details: always
+      enabled: true
+      probes:
+        enabled: true
+    metrics:
+      enabled: false
+  health:
+    # Disable backing services for health checks
+    diskspace:
+      enabled: false
+
+
+
+
