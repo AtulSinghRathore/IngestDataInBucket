@@ -40,7 +40,7 @@ public class LogRepository{
 
             for (LogEntryEntity log : logs) {
                 // Convert log to JSON or text format as per requirement
-                String logData = "{\"time\":" + log.getTimeStamp() + ",\"log\":\"" + log.getLog() + "\"}";
+                String logData = "{\"time\":" + log.getTimeStamp() + ",\"log\":\"" + log.getLog() + ",\"severity\":\"" + log.getSeverity() + "\"}";
 
                 // Upload log data to S3
                 s3Client.putObject(bucketName, "atul/" + log.getTimeStamp() + ".json", new ByteArrayInputStream(logData.getBytes()), null);

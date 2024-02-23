@@ -3,9 +3,6 @@ package com.middleware.logger.entity;
 import org.springframework.stereotype.Component;
 
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 
 
 @Entity
@@ -15,6 +12,8 @@ public class LogEntryEntity {
     private Long timeStamp;
     private String log;
 
+    private String severity;
+
     public LogEntryEntity() {
         // Default constructor
     }
@@ -22,6 +21,8 @@ public class LogEntryEntity {
     public LogEntryEntity(Long timeStamp, String log) {
         this.timeStamp = timeStamp;
         this.log = log;
+        this.severity= severity;
+
     }
 
     public Long getTimeStamp() {
@@ -35,6 +36,8 @@ public class LogEntryEntity {
     public String getLog() {
         return log;
     }
+    public String getSeverity() {return severity;}
+    public String setSeverity(String severity) {return this.severity;}
 
     public void setLog(String log) {
         this.log = log;

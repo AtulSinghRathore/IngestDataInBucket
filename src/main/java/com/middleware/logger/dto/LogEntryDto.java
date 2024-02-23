@@ -16,6 +16,15 @@ public class LogEntryDto {
     @JsonProperty("log")
     private String log;
 
+    @JsonProperty("severity")
+    private Severity severity;
+
+    public enum Severity {
+        DEBUG,
+        ERROR,
+        WARN
+    }
+
     public Long getTimeStamp() {
         return timeStamp;
     }
@@ -30,5 +39,13 @@ public class LogEntryDto {
 
     public void setLog(String log) {
         this.log = log;
+    }
+
+    public Severity getSeverity() {
+        return severity;
+    }
+
+    public void setSeverity(Severity severity) {
+        this.severity = severity;
     }
 }
